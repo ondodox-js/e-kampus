@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments/header::tag-head('Daftar mahasiswa')"></head>
+<body>
+<div th:replace="fragments/header::nav"></div>
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="h1">Daftar mahasiswa</h1>
+        </div>
+    </div>
+    <form class="row g-3 mb-4">
+        <div class="col-6">
+            <a class="btn btn-primary" th:href="@{/mahasiswa/tambah-mahasiswa}">Mahasiswa baru</a>
+        </div>
+        <div class="col-4">
+            <label for="inputPassword2" class="visually-hidden">Pencarian</label>
+            <input type="text" class="form-control" id="inputPassword2" placeholder="Pencarian barang">
+        </div>
+        <div class="col-2">
+            <button type="submit" class="btn btn-primary mb-3">Cari</button>
+        </div>
+    </form>
+    <div class="row mb-4">
+        <div class="col">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Aksi</th>
+                    <th scope="col">NIM</th>
+                    <th scope="col">Nama mahasiswa</th>
+                    <th scope="col">Jenis kelamin</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="mahasiswa, iteration : ${mahasiswas}">
+                    <form th:object="${mahasiswa}" th:action="@{/mahasiswa/hapus(id=${mahasiswa.getId()})}"
+                          method="post">
+                        <th scope="row" th:text="${iteration.count}"></th>
+                        <td>
+                            <button class="btn btn-danger" type="submit"><i class="fas fa-trash"></i></button>
+                            <a class="btn btn-outline-info" th:href="@{/mahasiswa/edit(id=${mahasiswa.getId()})}"><i
+                                    class="fas fa-edit"></i></a>
+                        </td>
+                        <td th:text="${mahasiswa.nim}"></td>
+                        <td th:text="${mahasiswa.namaMahasiswa}"></td>
+                        <td th:text="${(mahasiswa.jenisKelamin == 'L' ? 'Laki-laki' : 'Perempuan')}"></td>
+                    </form>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <form class="row g-3 justify-content-start" th:action="@{/keluar}" method="post">
+        <div class="col-2">
+            <button type="submit" class="btn btn-outline-dark">Keluar</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
