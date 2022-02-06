@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments/header::tag-head('Success')"></head>
+<body>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-12 mx-auto shadow p-5">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="h1"
+                        th:text="${'Halo '+ akun.namaPengguna + ', Proses pendaftaran akun anda berhasil!'}"></h1>
+                    <span class="text-muted">Silahkan klik <a class="btn" th:href="@{/}">ini</a> untuk masuk!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

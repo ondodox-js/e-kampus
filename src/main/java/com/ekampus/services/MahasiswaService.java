@@ -1,8 +1,11 @@
 package com.ekampus.services;
 
+import com.ekampus.models.entities.Jurusan;
 import com.ekampus.models.entities.Mahasiswa;
+import com.ekampus.models.repositories.JurusanRepo;
 import com.ekampus.models.repositories.MahasiswaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -13,11 +16,12 @@ import java.util.Optional;
 public class MahasiswaService {
     @Autowired
     private MahasiswaRepo mahasiswaRepo;
+    @Autowired
+    private JurusanRepo jurusanRepo;
 
-    public Iterable<Mahasiswa> all() {
+    public Iterable<Mahasiswa> findAll() {
         return mahasiswaRepo.findAll();
     }
-
 
     public void store(Mahasiswa mahasiswa) {
         try {
@@ -26,16 +30,29 @@ public class MahasiswaService {
         }
     }
 
-    public void destroy(Long id) {
-        mahasiswaRepo.deleteById(id);
+    public void destroy(Mahasiswa mahasiswa) {
+        mahasiswaRepo.delete(mahasiswa);
     }
 
-    public Mahasiswa find(Long id) {
+    public Mahasiswa find(Integer id) {
         return mahasiswaRepo.findById(id).get();
     }
 
     public void update(Mahasiswa mahasiswa) {
-//        Mahasiswa mahasiswa = mahasiswaRepo.findById(mahasiswaUpdate.getId()).get();
         mahasiswaRepo.save(mahasiswa);
     }
+
+    public Iterable<Jurusan> allJurusan() {
+        return jurusanRepo.findAll();
+    }
+
+    public Iterable<Mahasiswa> findAll(String string) {
+        if (string.equals("")) {
+            return mahasiswaRepo.findAll();
+        } else {
+            return mahasiswaRepo.findBy(string);
+        }
+    }
+
+
 }

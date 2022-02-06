@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
-<head th:replace="fragments/header::tag-head('Masuk')"></head>
+<head th:replace="fragments/header::tag-head('Daftar')"></head>
 <body>
 <div class="container mt-4">
     <div class="row">
         <div class="col-lg-8 col-md-10 col-sm-12 mx-auto shadow p-5">
             <div class="row">
                 <div class="col-12 text-center">
-                    <h1 class="h1">Masuk</h1>
+                    <h1 class="h1">Daftar</h1>
                 </div>
             </div>
             <div class="row" th:if="${pesan}">
@@ -15,18 +15,20 @@
                     <h1 class="h6 text-danger" th:text="${pesan}"></h1>
                 </div>
             </div>
-            <form class="row g-3" th:object="${akun}" th:action="@{/masuk}" method="post">
+            <form class="row g-3" th:object="${akun}" th:action="@{/daftar}" method="post">
                 <div class="col-12">
                     <label for="nama-pengguna" class="form-label">Nama pengguna</label>
-                    <input type="text" class="form-control" th:field="*{namaPengguna}" id="nama-pengguna">
+                    <input type="text" class="form-control" th:field="*{namaPengguna}" id="nama-pengguna"
+                           th:required="true">
                 </div>
                 <div class="col-12">
                     <label for="kata-sandi" class="form-label">Kata sandi</label>
-                    <input type="password" class="form-control" th:field="*{kataSandi}" id="kata-sandi">
+                    <input type="password" class="form-control" th:field="*{kataSandi}" id="kata-sandi"
+                           th:required="true">
                 </div>
                 <div class="col-12 d-flex justify-content-between mt-5">
-                    <a th:href="@{/daftar}" class="btn btn-outline-dark">Daftar</a>
-                    <button type="submit" class="btn btn-primary">Masuk</button>
+                    <a th:href="@{/}" class="btn btn-outline-dark">Sudah ada akun</a>
+                    <button type="submit" class="btn btn-primary">Daftar</button>
                 </div>
 
             </form>

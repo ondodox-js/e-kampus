@@ -1,28 +1,30 @@
 <!doctype html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
-<head th:replace="fragments/header::tag-head('Tambah')"></head>
+<head th:replace="fragments/header::tag-head('Mahasiswa')"><title></title></head>
 <body>
-<div th:replace="fragments/header::nav"></div>
 <div class="container">
-    <div class="row g-3 mb-4 mt-4">
-        <div class="col-6">
-            <a class="btn btn-primary" th:href="@{/mahasiswa}">Kembali</a>
-        </div>
-    </div>
+    <nav th:replace="fragments/header::nav">
+    </nav>
+    <h4 class="h4 mt-5">Data Mahasiswa Baru</h4>
+
     <div class="row">
-        <div class="col-lg-8 col-md-10 col-sm-12 mx-auto shadow p-2">
-            <form class="row g-3" th:object="${mahasiswa}" th:action="@{/mahasiswa}" method="post">
+        <div class="col-12 p-2">
+            <form class="row g-3" th:object="${mahasiswa}"
+                  onsubmit="return confirm('Apakah data yang dimasukkan sudah benar?')" th:action="@{/mahasiswa/store}"
+                  method="post">
                 <div class="col-md-3">
                     <label for="nim" class="form-label">NIM</label>
-                    <input type="text" class="form-control" th:field="*{nim}" id="nim">
+                    <input th:required="true" type="text" class="form-control" th:field="*{nim}" id="nim">
                 </div>
                 <div class="col-md-6">
                     <label for="nama-mahasiswa" class="form-label">Nama lengkap</label>
-                    <input type="text" class="form-control" th:field="*{namaMahasiswa}" id="nama-mahasiswa">
+                    <input th:required="true" type="text" class="form-control" th:field="*{namaMahasiswa}"
+                           id="nama-mahasiswa">
                 </div>
                 <div class="col-md-3 text-end align-self-end">
                     <div class="form-check">
-                        <input class="form-check-input" th:field="*{jenisKelamin}" type="radio" name="gridRadios"
+                        <input th:checked="true" class="form-check-input" th:field="*{jenisKelamin}" type="radio"
+                               name="gridRadios"
                                id="gridRadios1" value="L"
                                checked>
                         <label class="form-check-label" for="gridRadios1">
@@ -39,17 +41,26 @@
                 </div>
                 <div class="col-md-4">
                     <label for="inputState1" class="form-label">Jurusan</label>
-                    <select id="inputState1" th:field="*{jurusan}" class="form-select">
-                        <option th:value="'Manajemen Informatika'">Manajemen Informatika</option>
+                    <select id="inputState1" th:field="*{jurusan.id}" class="form-select">
+                        <option th:each="jurusan, iteration : ${kumpulanJurusan}"
+                                th:text="${iteration.count + ' - ' + jurusan.namaJurusan}" th:value="${jurusan.id}">
+                            Manajemen Informatika
+                        </option>
                     </select>
                 </div>
                 <div class="col-md-3">
                     <label for="no-hp" class="form-label">Hp</label>
-                    <input type="text" class="form-control" th:field="*{noHp}" id="no-hp">
+                    <input th:required="true" type="text" class="form-control" th:field="*{noHp}" id="no-hp">
                 </div>
                 <div class="col-md-5">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" th:field="*{email}" id="email">
+                    <input th:required="true" type="email" class="form-control" th:field="*{email}" id="email">
+                </div>
+                <div class="col-12">
+                    <div class="input-group">
+                        <span class="input-group-text">Alamat</span>
+                        <textarea class="form-control" aria-label="Alamat" th:field="*{alamat}"></textarea>
+                    </div>
                 </div>
                 <div class="col-12 text-end">
                     <button type="submit" class="btn btn-primary">Daftarkan</button>

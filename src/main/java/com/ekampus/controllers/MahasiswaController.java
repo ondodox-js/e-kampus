@@ -5,10 +5,10 @@ import com.ekampus.services.MahasiswaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
+import java.util.Optional;
 
 
 @Controller
@@ -17,31 +17,45 @@ public class MahasiswaController {
     @Autowired
     MahasiswaService mahasiswaService;
 
-    @GetMapping
+    @GetMapping()
     public String index(@RequestParam(value = "search", required = false) String search, Model model) {
-
-        model.addAttribute("mahasiswas", mahasiswaService.all());
+        try {
+            model.addAttribute("mahasiswas", mahasiswaService.findAll(search));
+            model.addAttribute("search", search);
+            return "mahasiswa/index";
+        } catch (Exception ignored) {
+            model.addAttribute("mahasiswas", mahasiswaService.findAll());
+            model.addAttribute("search", search);
+        }
         return "mahasiswa/index";
+
     }
 
-    @GetMapping("tambah-mahasiswa")
+    @GetMapping("/{id}/show")
+    public String show(@PathVariable Integer id, Model model) {
+        model.addAttribute("mahasiswa", mahasiswaService.find(id));
+        return "mahasiswa/show";
+    }
+
+    @GetMapping("create")
     public String create(Model model) {
         Mahasiswa mahasiswaBaru = new Mahasiswa();
+        model.addAttribute("kumpulanJurusan", mahasiswaService.allJurusan());
         model.addAttribute("mahasiswa", mahasiswaBaru);
 
         return "mahasiswa/create";
     }
 
-    @PostMapping()
+    @PostMapping("store")
     public String store(Mahasiswa mahasiswa) {
         mahasiswaService.store(mahasiswa);
-        return "redirect:mahasiswa";
+        return "redirect:/mahasiswa";
     }
 
-    @GetMapping("edit")
-    public String edit(@RequestParam(name = "id") Long id, Model model) {
-        Mahasiswa mahasiswa = mahasiswaService.find(id);
-        model.addAttribute("mahasiswa", mahasiswa);
+    @GetMapping("{id}/edit")
+    public String edit(@PathVariable Integer id, Model model) {
+        model.addAttribute("kumpulanJurusan", mahasiswaService.allJurusan());
+        model.addAttribute("mahasiswa", mahasiswaService.find(id));
         return "mahasiswa/edit";
     }
 
@@ -51,11 +65,10 @@ public class MahasiswaController {
         return "redirect:/mahasiswa";
     }
 
-    @PostMapping("hapus")
-    public String destroy(@RequestParam(name = "id") Long id) {
-        mahasiswaService.destroy(id);
+    @PostMapping("destroy")
+    public String destroy(Mahasiswa mahasiswa) {
+        mahasiswaService.destroy(mahasiswa);
         return "redirect:/mahasiswa";
     }
-
 
 }

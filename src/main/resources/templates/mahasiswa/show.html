@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments/header::tag-head('Detail')"><title></title></head>
+<body>
+<div class="container">
+    <nav th:replace="fragments/header::nav">
+    </nav>
+    <h4 class="h4 mt-5">Detail mahasiswa</h4>
+
+    <div class="col-6 mb-4 mx-auto">
+        <form th:object="${mahasiswa}" th:action="@{/mahasiswa/destroy(id=${mahasiswa.getId()})}"
+              method="post"
+              th:data-nama="${mahasiswa.namaMahasiswa}"
+              onsubmit="return confirm('yakin ingin menghapus ' + this.getAttribute('data-nama') + ' ?')">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${mahasiswa.namaMahasiswa}">Special title treatment</h5>
+                    <p class="card-text"><small class="text-muted" th:text="${mahasiswa.nim}"></small></p>
+                    <p class="card-text m-0"
+                       th:text="${(mahasiswa.jenisKelamin == 'L' ? 'Laki-laki' : 'Perempuan')}"></p>
+                    <p class="card-text m-0" th:text="${mahasiswa.email}"></p>
+                    <p class="card-text m-0" th:text="${mahasiswa.noHp}"></p>
+                    <p class="card-text m-0" th:text="${mahasiswa.jurusan.getNamaJurusan()}"></p>
+                    <div class="row mt-3">
+                        <div class="col text-start">
+                            <a th:href="@{/mahasiswa}" class="btn btn-outline-dark px-4"><i
+                                    class="fas fa-chevron-circle-left"></i></a>
+                        </div>
+                        <div class="col text-end">
+                            <button class="btn btn-danger px-4" type="submit"><i class="fas fa-trash"></i></button>
+                            <a class="btn btn-outline-info px-4"
+                               th:href="@{/mahasiswa/{id}/edit(id=${mahasiswa.getId()})}"><i
+                                    class="fas fa-edit"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+</body>
+</html>
